@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load tien %}
+{% block title %}Thanh toán{% endblock %}
+{% block content %}
+<h2 style="font-family:'Cormorant Garamond',serif;margin:18px 0 10px;">Thanh toán</h2>
+
+<div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;">
+  <div class="formbox">
+    {% if loi %}<div class="err">{{ loi }}</div>{% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <h3 style="margin:0 0 10px;">1) Thông tin nhận hàng</h3>
+
+      <p>Họ và tên người nhận:<br>
+        <input class="input" name="ho_ten" placeholder="Ví dụ: Trần Bình Minh" required>
+      </p>
+
+      <p>Số điện thoại:<br>
+        <input class="input" name="sdt" placeholder="Ví dụ: 0987654321" required>
+      </p>
+
+      <p>Địa chỉ giao hàng:<br>
+        <input class="input" name="dia_chi" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh" required>
+      </p>
+
+      <p>Ghi chú (tuỳ chọn):<br>
+        <input class="input" name="ghi_chu" placeholder="Ví dụ: giao giờ hành chính">
+      </p>
+
+      <p>Phương thức thanh toán:<br>
+        <select class="input" name="phuong_thuc_tt" style="max-width:320px;">
+          <option value="COD">COD (Thanh toán khi nhận hàng)</option>
+          <option value="ChuyenKhoan">Chuyển khoản</option>
+        </select>
+      </p>
+
+      <h3 style="margin:16px 0 10px;">2) Số lượng</h3>
+      <p>
+        <input class="input" name="so_luong" value="1" style="max-width:160px;">
+      </p>
+
+      <button class="btn primary" type="submit">Đặt hàng</button>
+      <a class="btn" href="{% url 'home' %}">Quay lại</a>
+    </form>
+  </div>
+
+  <div class="card" style="padding:14px;">
+    <h3 style="margin:0 0 10px;">Tóm tắt đơn hàng</h3>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div style="width:88px;height:88px;background:#fff;border:1px solid #eee;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        {% if sp.anh %}
+          <img src="{{ sp.anh.url }}" alt="{{ sp.ten }}" style="width:100%;height:100%;object-fit:contain;">
+        {% else %}
+          <span style="color:#999;">No image</span>
+        {% endif %}
+      </div>
+      <div>
+        <div style="font-weight:700;">{{ sp.ten }}</div>
+        <div style="color:#666;">Giá: <b>{{ sp.gia|vnd }} VND</b></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;color:#666;">
+      Sau khi đặt, đơn ở trạng thái <b>Chờ xác nhận</b>.<br>
+      Bạn có thể <b>Xác nhận</b> hoặc <b>Huỷ</b> trong trang Đơn hàng.
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tien %}
+{% block title %}Home - Trang sức{% endblock %}
+{% block content %}
+  <div class="hero">
+    <div class="banner">
+      <img src="{% static 'banner.png' %}" alt="Banner">
+      <div class="overlay"></div>
+      <div class="content">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Sản phẩm</h2>
+    <div class="hint">Tìm kiếm bằng ô search phía trên</div>
+  </div>
+
+  <div class="grid">
+    {% for sp in ds %}
+      <div class="card">
+        <div class="thumb">
+          {% if sp.anh %}
+            <img src="{{ sp.anh.url }}" alt="{{ sp.ten }}" class="thumb-img">
+          {% else %}
+            JEWELRY
+          {% endif %}
+        </div>
+        <div class="body">
+          <p class="name">{{ sp.ten }}</p>
+          <p class="price">{{ sp.gia|vnd }} VND</p>
+          <div class="row">
+            {% if user.is_authenticated %}
+              <a class="btn primary" href="{% url 'dat_hang' sp.id %}">Mua</a>
+              <a class="btn" href="{% url 'ds_don' %}">Đơn của tôi</a>
+            {% else %}
+              <a class="btn primary" href="{% url 'dang_nhap' %}">Đăng nhập để mua</a>
+              <a class="btn" href="{% url 'dang_ky' %}">Đăng ký</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

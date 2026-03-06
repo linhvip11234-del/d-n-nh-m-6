@@ -1,0 +1,52 @@
+{% extends "admin_base.html" %}
+{% load tien %}
+{% block title %}Admin - Sản phẩm{% endblock %}
+{% block admin_content %}
+  <div class="card" style="padding:18px;">
+    <div class="row" style="justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <h2 style="margin:0;">Sản phẩm</h2>
+      <a class="btn primary" href="{% url 'admin_sanpham_create' %}">+ Thêm</a>
+    </div>
+
+    <form method="get" style="margin:12px 0;display:flex;gap:8px;">
+      <input name="q" value="{{ q }}" placeholder="Tìm theo tên..." style="flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:10px;">
+      <button class="btn" type="submit">Tìm</button>
+    </form>
+
+    <div style="overflow:auto;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ảnh</th>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for sp in ds %}
+          <tr>
+            <td>{{ sp.id }}</td>
+            <td>
+              {% if sp.anh %}
+                <img src="{{ sp.anh.url }}" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:12px;border:1px solid var(--line);">
+              {% else %}
+                <span class="muted">—</span>
+              {% endif %}
+            </td>
+            <td style="min-width:260px;">{{ sp.ten }}</td>
+            <td><b>{{ sp.gia|vnd }}</b> VND</td>
+            <td style="white-space:nowrap;">
+              <a class="btn" href="{% url 'admin_sanpham_edit' sp.id %}">Sửa</a>
+              <a class="btn danger" href="{% url 'admin_sanpham_delete' sp.id %}">Xoá</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">Không có sản phẩm.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
